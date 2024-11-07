@@ -1,0 +1,21 @@
+{
+  "name": "2024_danpoong_team_58_be",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "단풍톤 백엔드 레포",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon --exec node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.7"
+  }
+}
