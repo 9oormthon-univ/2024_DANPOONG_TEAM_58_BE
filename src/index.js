@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import userRoutes from "./routes/user.routes.js";
+import db from "./models/index.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 8000;
@@ -12,12 +15,16 @@ app.use(cors({
   credentials: true
 }));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const sequelize = db.sequelize;
+sequelize.sync();
+
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 app.use('/users', userRoutes);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
