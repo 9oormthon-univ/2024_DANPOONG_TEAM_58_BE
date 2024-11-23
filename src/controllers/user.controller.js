@@ -1,4 +1,4 @@
-import * as userServices from '../services/user.servie.js';
+import * as userServices from '../services/user.service.js';
 
 // 카카오 로그인 페이지로 리디렉션하는 함수
 export const kakaoLogin = (req, res) => {
