@@ -1,4 +1,4 @@
-import { getUserInfo } from "../services/user.servie.js";
+import { getUserInfo } from "../services/user.service.js";
 import { createDiary } from "../services/diary.service.js";
 
 export const writeDiary = async (req, res) => {
