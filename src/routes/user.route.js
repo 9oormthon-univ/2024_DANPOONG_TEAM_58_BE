@@ -13,7 +13,7 @@ router.get('/login', userControllers.kakaoLogin);
 router.get('/kakao/callback', userControllers.kakaoCallback);
 
 // 유저별 정보 조회
-router.get('/get/:userId', userControllers.getUser);
+router.get('/get', userControllers.getUser);
 
 // 유저별 스킨 설정
 router.patch('/skin/:skinId', userControllers.setSkin);

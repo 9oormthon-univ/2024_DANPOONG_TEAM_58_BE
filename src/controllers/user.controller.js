@@ -68,7 +68,8 @@ export const getUser = async (req, res) => {
 // 유저별 스킨 설정
 export const setSkin = async (req, res) => {
   const authHeader = req.headers.authorization;
-  const { skinId } = req.body;
+  const { skinId } = req.params;
+
   if (!skinId) {
     return res.status(400).send({ message: '스킨 ID가 필요합니다.' });
   }
