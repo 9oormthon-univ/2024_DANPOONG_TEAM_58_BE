@@ -38,4 +38,14 @@ UserSkin.belongsTo(Skin, { foreignKey: "pk2", onDelete: "CASCADE" });
 Skin.hasMany(SkinImage, { foreignKey: "pk" });
 SkinImage.belongsTo(Skin, { foreignKey: "pk", onDelete: "CASCADE" });
 
+Diary.associate = (models) => {
+  Diary.belongsTo(models.User, {
+    foreignKey: "id",
+  });
+};
+
+User.associate = (models) => {
+  User.hasMany(models.Diary);
+};
+
 export { User, Skin, Diary, UserSkin, SkinImage, sequelize };

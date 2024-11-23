@@ -1,5 +1,5 @@
 import { getUserInfo } from "../services/user.service.js";
-import { createDiary } from "../services/diary.service.js";
+import { createDiary, findDiaryByWriterId } from "../services/diary.service.js";
 
 export const writeDiary = async (req, res) => {
   const data = req.body;
@@ -23,5 +23,22 @@ export const writeDiary = async (req, res) => {
       message: "일기를 작성하지 못했습니다.",
       error: error.message,
     });
+  }
+};
+
+export const getDiary = async (req, res) => {
+  const userId = req.params.userId;
+
+  if (!userId) {
+    return res.status(400).send({ message: "사용자 id를 입력해주세요." });
+  }
+  try {
+    const result = await findDiaryByWriterId(userId);
+
+    return res
+      .status(200)
+      .send({ message: `${userId}님의 일기 조회 결과입니다.`, data: result });
+  } catch (error) {
+    return res.status(500).send({ message: "일기 조회에 실패하였습니다." });
   }
 };

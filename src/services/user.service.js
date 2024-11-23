@@ -1,9 +1,7 @@
-import axios from 'axios';
-import qs from 'querystring';
-import dotenv from 'dotenv';
-import User from '../models/user.model.js';
-import Skin from '../models/skin.model.js';
-import UserSkin from '../models/userskin.model.js';
+import axios from "axios";
+import qs from "querystring";
+import dotenv from "dotenv";
+import { User, Skin, UserSkin } from "../models/index.js";
 
 dotenv.config();
 
@@ -36,8 +34,8 @@ export const getKakaoToken = async (code) => {
   }
 };
 
-export const addUser = async (tokenData)=>{
-  try{
+export const addUser = async (tokenData) => {
+  try {
     // 액세스 토큰 추가
     const header = {
       Authorization: `Bearer ${tokenData.access_token}`,
@@ -77,11 +75,11 @@ export const addUser = async (tokenData)=>{
   } catch (error) {
     throw new Error("유저 정보 불러오기 실패");
   }
-}
+};
 
 export const getUserInfoFromToken = async (accessToken) => {
   try {
-    const response = await axios.get('https://kapi.kakao.com/v2/user/me', {
+    const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -96,13 +94,13 @@ export const getUserInfoFromToken = async (accessToken) => {
       profile_image: data.kakao_account.profile.profile_image_url,
     };
   } catch (error) {
-    console.error('카카오 유저 정보 조회 실패:', error);
-    throw new Error('카카오 유저 정보 조회 실패');
+    console.error("카카오 유저 정보 조회 실패:", error);
+    throw new Error("카카오 유저 정보 조회 실패");
   }
 };
 
-export const getUserInfo = async (userId)=>{
-  try{
+export const getUserInfo = async (userId) => {
+  try {
     // 유저 조회
     const user = await User.findOne({
       where: { kakao_id: userId },
@@ -110,17 +108,17 @@ export const getUserInfo = async (userId)=>{
 
     // 유저가 존재하지 않을 경우 에러 처리
     if (!user) {
-      throw new Error('유저를 찾을 수 없습니다.');
+      throw new Error("유저를 찾을 수 없습니다.");
     }
 
     return user;
   } catch (error) {
     throw new Error("유저 정보 조회 실패");
   }
-}
+};
 
-export const setUserSkin = async (userId, newSkinId)=>{
-  try{
+export const setUserSkin = async (userId, newSkinId) => {
+  try {
     // 유저 조회
     const user = await User.findOne({
       where: { kakao_id: userId },
@@ -128,7 +126,7 @@ export const setUserSkin = async (userId, newSkinId)=>{
 
     // 유저가 존재하지 않을 경우 에러 처리
     if (!user) {
-      throw new Error('유저를 찾을 수 없습니다.');
+      throw new Error("유저를 찾을 수 없습니다.");
     }
 
     // 스킨 조회
@@ -160,4 +158,4 @@ export const setUserSkin = async (userId, newSkinId)=>{
   } catch (error) {
     throw new Error("스킨 변경 실패");
   }
-}
+};
