@@ -34,8 +34,8 @@ export const getKakaoToken = async (code) => {
   }
 };
 
-export const addUser = async (tokenData)=>{
-  try{
+export const addUser = async (tokenData) => {
+  try {
     // 액세스 토큰 추가
     const header = {
       Authorization: `Bearer ${tokenData.access_token}`,
@@ -80,7 +80,7 @@ export const addUser = async (tokenData)=>{
   } catch (error) {
     throw new Error("유저 정보 불러오기 실패");
   }
-}
+};
 
 export const getUserInfoFromToken = async (accessToken) => {
   try {
@@ -162,5 +162,15 @@ export const setUserSkin = async (userId, newSkinId) => {
     };
   } catch (error) {
     throw new Error("스킨 변경 실패");
+  }
+};
+
+export const modifyUserReward = async (userId) => {
+  try {
+    const user = await User.findOne({ where: { pk: userId } });
+    user.reward += 10;
+    await user.save();
+  } catch (error) {
+    throw error;
   }
 };
