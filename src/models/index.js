@@ -40,7 +40,7 @@ SkinImage.belongsTo(Skin, { foreignKey: "pk", onDelete: "CASCADE" });
 
 Diary.associate = (models) => {
   Diary.belongsTo(models.User, {
-    foreignKey: "id",
+    foreignKey: "pk",
   });
 };
 
