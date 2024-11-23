@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { Diary } from "../models/index.js";
 import { Op } from "sequelize";
+import { modifyUserReward } from "./user.service.js";
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ export const createDiary = async (data) => {
     const newDiary = await Diary.create({
       ...data,
     });
+    await modifyUserReward(data.writer);
 
     return newDiary;
   } catch (error) {
