@@ -21,14 +21,22 @@ app.use(
   })
 );
 
-// (async () => {
-//   await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", { raw: true }); // 외래 키 체크 비활성화
+(async () => {
+  try {
+    // 외래 키 체크 비활성화
+    await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", { raw: true });
 
-//   await sequelize.sync({ force: true }); // 모든 테이블 삭제 및 재생성
+    // 모델 동기화
+    await sequelize.sync({ alter: true });
 
-//   await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", { raw: true }); // 외래 키 체크 다시 활성화
-//   console.log("모든 테이블이 재생성되었습니다!");
-// })();
+    // 외래 키 체크 다시 활성화
+    await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", { raw: true });
+
+    console.log("테이블 동기화 완료");
+  } catch (error) {
+    console.error("테이블 동기화 중 오류 발생:", error);
+  }
+})();
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

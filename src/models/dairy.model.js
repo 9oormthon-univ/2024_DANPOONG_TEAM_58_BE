@@ -8,15 +8,15 @@ export const DiaryModel = (sequelize, DataTypes) => {
       },
       content: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       emotion: {
         type: DataTypes.ENUM("happy", "sad", "angry", "neutral"), // Enum 값은 필요에 따라 수정
-        allowNull: false,
+        allowNull: true,
       },
       writer: {
         type: DataTypes.STRING(20),
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

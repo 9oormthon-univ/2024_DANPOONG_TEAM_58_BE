@@ -22,5 +22,10 @@ export const SkinModel = (sequelize, DataTypes) => {
     }
   );
 
+  // 번호(pk)로 Skin을 찾는 방법
+  Skin.findByPk = async (pk) => {
+    return await Skin.findOne({ where: { pk } });
+  };
+
   return Skin;
 };
