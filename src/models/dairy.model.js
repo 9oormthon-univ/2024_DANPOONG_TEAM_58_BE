@@ -16,7 +16,7 @@ export const DiaryModel = (sequelize, DataTypes) => {
       },
       writer: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
