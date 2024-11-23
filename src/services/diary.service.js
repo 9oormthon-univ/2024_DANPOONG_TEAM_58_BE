@@ -10,7 +10,7 @@ export const createDiary = async (data) => {
     const newDiary = await Diary.create({
       ...data,
     });
-    await modifyUserReward(data.writer);
+    await modifyUserReward(data.writer, 10);
 
     return newDiary;
   } catch (error) {
