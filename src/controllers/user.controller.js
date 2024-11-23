@@ -10,16 +10,21 @@ export const kakaoLogin = (req, res) => {
 export const kakaoCallback = async (req, res) => {
   const code = req.query.code;
 
+  console.log("코드", code);
+
   if (!code) {
     return res.status(400).send({ message: '카카오 인증코드가 없습니다.' });
   }
 
   try {
     const tokenData = await userServices.getKakaoToken(code);
+    localStorage.setItem('access_token', accessToken); // 로컬 스토리지에 저장
+    const userInfo = await userServices.getUserInfo(tokenData);
 
     return res.status(200).send({
       message: '토큰 발급 성공',
-      data: tokenData,
+      token: tokenData,
+      userInfo: userInfo,
     });
   } catch (error) {
     return res.status(500).send({
