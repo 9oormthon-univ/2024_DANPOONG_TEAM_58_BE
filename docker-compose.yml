@@ -3,6 +3,7 @@ version: '3.8'
 services:
   express:
     image: node:14
+    container_name: express-1
     working_dir: /app
     volumes:
       - .:/app

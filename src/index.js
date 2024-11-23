@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/user.route.js";
 import diaryRouter from "./routes/diary.route.js";
+import skinRouter from "./routes/skin.route.js";
 import { sequelize } from "./models/index.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/diaries", diaryRouter);
+app.use("/skin", skinRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

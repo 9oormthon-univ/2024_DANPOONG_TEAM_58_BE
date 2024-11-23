@@ -1,4 +1,6 @@
-export const SkinImageModel = (sequelize, DataTypes) => {
+import { Sequelize, DataTypes } from "sequelize";
+
+export const SkinImageModel = (sequelize) => {
   const SkinImage = sequelize.define(
     "SkinImage",
     {

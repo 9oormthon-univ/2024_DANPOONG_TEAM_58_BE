@@ -1,21 +1,34 @@
-import { SkinModel } from '../models/skin.model';
-import { SkinImageModel } from '../models/skinimage.model';
-import { UserSkinModel } from '../models/userskin.model';
-import { sequelize } from '../models';
-import { UserModel } from '../models/user.model'; // 유저 모델도 필요
+import { SkinModel } from '../models/skin.model.js';
+import { SkinImageModel } from '../models/skinimage.model.js';
+import { UserSkinModel } from '../models/userskin.model.js';
+import { sequelize } from '../models/index.js';
+import { UserModel } from '../models/user.model.js';
 
 const Skin = SkinModel(sequelize);
 const SkinImage = SkinImageModel(sequelize);
-const UserSkin = UserSkinModel(sequelize, Skin, UserModel);  // UserSkin 모델이 User 모델을 참조하므로 User도 import해야 합니다.
+const User = UserModel(sequelize); // User 모델을 가져옵니다.
+const UserSkin = UserSkinModel(sequelize, Skin, User);  // UserSkin 모델을 User 모델을 참조하도록 설정
 
 // 구매 가능한 스킨 목록 가져오기
 export const getPurchasableSkins = async () => {
   try {
-    return await Skin.findAll({
-      where: { isPurchasable: true },
-    });
+    return await Skin.findAll();
   } catch (error) {
     throw new Error('스킨 목록을 가져오는 데 실패했습니다.');
+  }
+};
+
+// 리워드 차감
+export const modifyUserReward = async (userId, skinPrice) => {
+  try {
+    const user = await User.findOne({ where: { pk: userId } });
+    user.reward -= skinPrice; // skinPrice만큼 리워드를 차감
+    if (user.reward < 0) {
+      throw new Error('리워드가 부족합니다.');
+    }
+    await user.save();
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -26,6 +39,17 @@ export const purchaseSkin = async (userId, skinId) => {
     if (!skin || !skin.isPurchasable) {
       throw new Error('구매할 수 없는 스킨입니다.');
     }
+
+    // skinPrice 조건에 따른 차감액 설정
+    let skinPrice = 0;
+    if (skin.defaultValue === 1 || skin.defaultValue === 2) {
+      skinPrice = 50; // defaultValue가 1 또는 2일 때 50 차감
+    } else if (skin.defaultValue === 3) {
+      skinPrice = 100; // defaultValue가 3일 때 100 차감
+    }
+
+    // 리워드 차감 함수 호출
+    await modifyUserReward(userId, skinPrice);
 
     let userSkin = await UserSkin.findOne({ where: { pk: userId, pk2: skinId } });
     if (!userSkin) {

@@ -1,4 +1,4 @@
-import * as skinService from '../services/skin.service';
+import * as skinService from '../services/skin.service.js';
 
 // 구매 가능한 스킨 목록
 export const getPurchasableSkins = async (req, res) => {
