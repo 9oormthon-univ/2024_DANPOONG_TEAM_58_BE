@@ -6,7 +6,7 @@ dotenv.config();
 const app = express();
 const port = 8000;
 const sequelize = db.sequelize;
-sequelize.sync();
+await sequelize.sync();
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
