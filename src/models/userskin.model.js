@@ -17,6 +17,7 @@ export const UserSkinModel = (sequelize, DataTypes, User, Skin) => {
           model: Skin,
           key: "pk",
         },
+        defaultValue: 0,  // 0번 스킨 기본값
       },
     },
     {
