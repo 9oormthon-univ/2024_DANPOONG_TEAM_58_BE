@@ -1,21 +1,33 @@
 // src/initialize.js
-import { Diary, Skin, SkinImage } from './models/index.js'; // Sequelize 모델 불러오기
+import { Diary, Skin, SkinImage, Question } from './models/index.js'; // Sequelize 모델 불러오기
 
 async function initializeQuestions() {
   const questions = [
-    { question: "오늘 하루 어땠나요?" },
-    { question: "오늘 기분은 어땠나요?" },
-    { question: "오늘 가장 기억에 남는 순간은 무엇인가요?" },
+    {
+      content: "오늘 하루 어땠나요?",
+      answerAt: new Date(new Date().setDate(new Date().getDate() + 2)), // 내일
+    },
+    {
+      content: "오늘 기분은 어땠나요?",
+      answerAt: new Date(new Date().setDate(new Date().getDate() + 1)), // 오늘
+    },
+    {
+      content: "오늘 가장 기억에 남는 순간은 무엇인가요?",
+      answerAt: new Date(new Date().setDate(new Date().getDate())), // 어제
+    },
   ];
 
-  for (const question of questions) {
-    const existingQuestion = await Diary.findOne({
-      where: { question: question.question },
+  // 각 질문에 대해 answerAt 값을 하루 단위로 설정
+  for (const item of questions) {
+    item.answerAt.setHours(0, 0, 0, 0);
+
+    const existingQuestion = await Question.findOne({
+      where: { content: item.content },
     });
 
     if (!existingQuestion) {
-      await Diary.create(question);
-      console.log(`Inserted question: ${question.question}`);
+      await Question.create(item);
+      console.log(`Inserted question: ${item.content}`);
     }
   }
 }

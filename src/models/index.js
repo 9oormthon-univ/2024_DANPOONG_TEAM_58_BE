@@ -5,6 +5,7 @@ import { DiaryModel } from "./dairy.model.js";
 import { UserSkinModel } from "./userskin.model.js";
 import { SkinModel } from "./skin.model.js";
 import { SkinImageModel } from "./skinimage.model.js";
+import { QuestionModel } from "./question.model.js";
 
 const env = process.env.NODE_ENV || "development";
 const config = dbConfig[env];
@@ -21,11 +22,12 @@ const sequelize = new Sequelize(
   }
 );
 
-const User = UserModel(sequelize);
-const Skin = SkinModel(sequelize);
-const Diary = DiaryModel(sequelize);
-const UserSkin = UserSkinModel(sequelize, User, Skin);
-const SkinImage = SkinImageModel(sequelize);
+const User = UserModel(sequelize, DataTypes);
+const Skin = SkinModel(sequelize, DataTypes);
+const Diary = DiaryModel(sequelize, DataTypes);
+const UserSkin = UserSkinModel(sequelize, DataTypes, User, Skin);
+const SkinImage = SkinImageModel(sequelize, DataTypes);
+const Question = QuestionModel(sequelize);
 
 // 관계 설정
 User.hasMany(UserSkin, { foreignKey: "pk" });
@@ -47,4 +49,4 @@ User.associate = (models) => {
   User.hasMany(models.Diary);
 };
 
-export { User, Skin, Diary, UserSkin, SkinImage, sequelize };
+export { User, Skin, Diary, UserSkin, SkinImage, sequelize, Question };

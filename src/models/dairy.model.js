@@ -4,10 +4,6 @@ export const DiaryModel = (sequelize) => {
   const Diary = sequelize.define(
     "Diary",
     {
-      question: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
       content: {
         type: DataTypes.TEXT,
         allowNull: true,
@@ -20,6 +16,10 @@ export const DiaryModel = (sequelize) => {
         type: DataTypes.UUID,
         allowNull: true,
       },
+      questionId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+      }
     },
     {
       tableName: "Diary",
