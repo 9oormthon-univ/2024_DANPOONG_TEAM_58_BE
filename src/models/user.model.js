@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 
-export const UserModel = (sequelize, DataTypes) => {
+export const UserModel = (sequelize) => {
   const User = sequelize.define(
     "User",
     {

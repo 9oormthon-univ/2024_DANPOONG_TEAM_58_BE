@@ -1,6 +1,6 @@
+import { Sequelize, DataTypes } from "sequelize";
 
-
-export const DiaryModel = (sequelize, DataTypes) => {
+export const DiaryModel = (sequelize) => {
   const Diary = sequelize.define(
     "Diary",
     {

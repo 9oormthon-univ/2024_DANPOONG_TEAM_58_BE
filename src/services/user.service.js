@@ -166,12 +166,18 @@ export const setUserSkin = async (userId, newSkinId) => {
   }
 };
 
-export const modifyUserReward = async (userId) => {
+// 리워드 차감
+export const modifyUserReward = async (userId, skinPrice) => {
   try {
     const user = await User.findOne({ where: { pk: userId } });
-    user.reward += 10;
+    user.reward -= skinPrice; // skinPrice만큼 리워드를 차감
+    if (user.reward < 0) {
+      throw new Error('리워드가 부족합니다.');
+    }
     await user.save();
   } catch (error) {
     throw error;
   }
 };
+
+
