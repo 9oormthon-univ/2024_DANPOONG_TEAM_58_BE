@@ -6,5 +6,6 @@ const diaryRouter = express.Router();
 diaryRouter.post("/", diaryControllers.writeDiary);
 diaryRouter.get("/:userId", diaryControllers.getDiary);
 diaryRouter.get("/", diaryControllers.getDiaryByDate);
+diaryRouter.patch("/:diaryId", diaryControllers.editDiary);
 
 export default diaryRouter;

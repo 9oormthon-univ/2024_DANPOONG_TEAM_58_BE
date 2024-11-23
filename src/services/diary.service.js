@@ -48,3 +48,19 @@ export const findDiaryByDate = async (userId, date) => {
     throw error;
   }
 };
+
+export const patchDiary = async (diaryId, data) => {
+  try {
+    const diary = await Diary.findByPk(diaryId);
+    if (diary) {
+      diary.content = data.content || diary.content;
+      diary.emotion = data.emotion || diary.emotion;
+      await diary.save();
+      return diary;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
