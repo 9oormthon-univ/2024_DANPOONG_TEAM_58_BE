@@ -10,10 +10,6 @@ export const DiaryModel = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      createAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       emotion: {
         type: DataTypes.ENUM("happy", "sad", "angry", "neutral"), // Enum 값은 필요에 따라 수정
         allowNull: false,
@@ -21,7 +17,7 @@ export const DiaryModel = (sequelize, DataTypes) => {
     },
     {
       tableName: "Diary",
-      timestamps: false,
+      timestamps: true,
     }
   );
 
