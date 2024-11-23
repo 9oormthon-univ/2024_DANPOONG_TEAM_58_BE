@@ -24,9 +24,10 @@ export const UserModel = (sequelize, DataTypes) => {
         allowNull: true,
       },
       reward: {
-        type: DataTypes.INT,
+        type: DataTypes.INTEGER,
         allowNull: false,
-      }
+        default: 0,
+      },
     },
     {
       tableName: "User",

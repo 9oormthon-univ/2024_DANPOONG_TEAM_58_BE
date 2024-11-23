@@ -14,3 +14,12 @@ export const createDiary = async (data) => {
     throw error;
   }
 };
+
+export const findDiaryByWriterId = async (userId) => {
+  try {
+    const Diaries = await Diary.findAll({ where: { writer: userId } });
+    return Diaries;
+  } catch (error) {
+    throw error;
+  }
+};
