@@ -65,7 +65,7 @@ export const getUserInfo = async (tokenData)=>{
       user: {
         id: user.id,
         nickname: user.nickname,
-        profile_image: user.profile_image,
+        profile_image: user.image,
       },
       created,  // created가 true면 새로 생성된 유저, false면 기존 유저
     };

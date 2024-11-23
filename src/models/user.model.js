@@ -15,10 +15,6 @@ export const UserModel = (sequelize, DataTypes) => {
         unique: true,
         comment: "UNIQUE",
       },
-      password: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-      },
       nickname: {
         type: DataTypes.STRING(20),
         allowNull: false,
