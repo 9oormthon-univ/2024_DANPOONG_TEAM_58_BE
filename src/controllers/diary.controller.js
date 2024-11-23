@@ -1,4 +1,3 @@
-import { getUserInfo } from "../services/user.service.js";
 import {
   createDiary,
   findDiaryByDate,
@@ -8,16 +7,9 @@ import {
 
 export const writeDiary = async (req, res) => {
   const data = req.body;
-
-  if (!data) {
-    return res.status(400).send({ message: "일기 정보가 없습니다." });
-  }
+  data.writer = req.user.pk;
 
   try {
-    // TODO 로그인 처리 후 일기 작성자 처리하기
-    // const tokenData = localStorage.getItem("access_token");
-    // const { id } = await getUserInfo(tokenData).user;
-    // console.log(id);
     const newDiary = await createDiary(data);
     return res.status(201).send({
       message: "일기 작성에 성공했습니다.",
@@ -32,35 +24,25 @@ export const writeDiary = async (req, res) => {
 };
 
 export const getDiary = async (req, res) => {
-  const userId = req.params.userId;
-
-  if (!userId) {
-    return res.status(400).send({ message: "사용자 id를 입력해주세요." });
-  }
   try {
-    const result = await findDiaryByWriterId(userId);
-
+    const result = await findDiaryByWriterId(req.user.pk);
     return res
       .status(200)
-      .send({ message: `${userId}님의 일기 조회 결과입니다.`, data: result });
+      .send({ message: `${req.user.nickname}님의 일기 조회 결과입니다.`, data: result });
   } catch (error) {
     return res.status(500).send({ message: "일기 조회에 실패하였습니다." });
   }
 };
 
 export const getDiaryByDate = async (req, res) => {
-  const { userId, year, month, day } = req.query;
-
-  if (!userId) {
-    return res.status(400).send({ message: "사용자 id를 입력해주세요." });
-  }
-  const date = new Date(year, month - 1, day);
+  const { year, month, day } = req.query;
 
   try {
-    const result = await findDiaryByDate(userId, date);
+    const date = new Date(year, month - 1, day);
+    const result = await findDiaryByDate(req.user.pk, date);
 
     return res.status(200).send({
-      message: `${userId}님의 ${year}-${month}-${day} 일자 일기 조회 결과입니다.`,
+      message: `${req.user.nickname}님의 ${year}-${month}-${day} 일자 일기 조회 결과입니다.`,
       data: result,
     });
   } catch (error) {
