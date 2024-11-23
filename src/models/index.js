@@ -10,7 +10,11 @@ const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+    port: 3306,
+  }
 );
 
 db.User = UserModel(sequelize, Sequelize);

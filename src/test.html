@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kakao REST-API Node.js example</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <h1>1. 카카오 로그인 및 프로필 조회 예제</h1>
+    <pre>
+    </pre>
+
+    <div class="text-center">
+      <!-- 카카오 로그인 버튼 -->
+      <a href="http://localhost:8000/users/login">
+        <img
+          src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+          width="222"
+        />
+      </a>
+      <br />
+
+      <button onclick="REST_Call('/profile')">프로필 조회</button><br />
+
+      <textarea id="contents" rows="20" cols="100"></textarea><br />
+
+      <button onclick="REST_Call('/logout')">로그아웃</button><br />
+    </div>
+
+    <script>
+      function REST_Call(path) {
+        axios
+          .get("http://localhost:3000" + path, {
+            params: {},
+            withCredentials: true,
+          })
+          .then(({ data }) => {
+            console.log(data);
+            $("#contents").html(JSON.stringify(data));
+          })
+          .catch((err) => {
+            console.log(err);
+            $("#contents").html(JSON.stringify(err));
+          });
+      }
+    </script>
+  </body>
+</html>
