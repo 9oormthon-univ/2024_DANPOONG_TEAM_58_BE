@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'querystring';
 import dotenv from 'dotenv';
+const { User } = require('../models/user.model.js');
 
 dotenv.config();
 
@@ -35,21 +36,39 @@ export const getKakaoToken = async (code) => {
 
 export const getUserInfo = async (tokenData)=>{
   try{
-      // Authorization: 'Bearer access_token'
-  const header = {
-    Authorization: `Bearer ${tokenData.access_token}`,
-  };
-  
-  const get = await axios.get("https://kapi.kakao.com/v2/user/me", {headers: header})
-  const result = get.data
+    // 액세스 토큰 추가
+    const header = {
+      Authorization: `Bearer ${tokenData.access_token}`,
+    };
+    
+    const get = await axios.get("https://kapi.kakao.com/v2/user/me", {headers: header})
+    const result = get.data
 
-  const userInfo = {
-    id: result.id,
-    nickname: result.kakao_account.profile.nickname,  // 닉네임
-    // profileImage: result.kakao_account.profile.profile_image_url,  // 프로필 사진 URL
-  };
+    const userInfo = {
+      id: result.id,
+      nickname: result.kakao_account.profile.nickname,  // 닉네임
+      // profileImage: result.kakao_account.profile.profile_image_url,  // 프로필 사진 URL
+    };
 
-  return userInfo;
+    // 데이터베이스에 유저가 존재하는지 확인 후 없으면 추가
+    const [user, created] = await User.findOrCreate({
+      where: { kakao_id: userInfo.id },
+      defaults: {
+        email: result.kakao_account.email,
+        nickname: userInfo.nickname,
+        // profile_image: userInfo.profileImage,
+      },
+    });
+
+    // 새로 생성된 유저나 기존 유저 정보 반환
+    return {
+      user: {
+        id: user.id,
+        nickname: user.nickname,
+        profile_image: user.profile_image,
+      },
+      created,  // created가 true면 새로 생성된 유저, false면 기존 유저
+    };
   } catch (error) {
     throw new Error("유저 정보 불러오기 실패");
   }
