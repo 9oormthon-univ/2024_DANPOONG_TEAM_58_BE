@@ -51,10 +51,13 @@ export const findDiaryByDate = async (userId, date) => {
   }
 };
 
-export const patchDiary = async (diaryId, data) => {
+export const patchDiary = async (diaryId, data, userId) => {
   try {
     const diary = await Diary.findByPk(diaryId);
     if (diary) {
+      if (diary.writer != userId) {
+        throw new Error('자신의 일기만 수정할 수 있습니다');
+      }
       diary.content = data.content || diary.content;
       diary.emotion = data.emotion || diary.emotion;
       await diary.save();
