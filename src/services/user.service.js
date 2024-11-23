@@ -58,7 +58,7 @@ export const addUser = async (tokenData) => {
       where: { kakao_id: userInfo.id },
       defaults: {
         kakao_id: userInfo.id,
-        email: result.kakao_account.email,
+        // email: result.kakao_account.email,
         nickname: userInfo.nickname,
         // profile_image: userInfo.profileImage,
         reward: 0,
@@ -78,6 +78,7 @@ export const addUser = async (tokenData) => {
       created, // created가 true면 새로 생성된 유저, false면 기존 유저
     };
   } catch (error) {
+    console.log(error.message);
     throw new Error("유저 정보 불러오기 실패");
   }
 };

@@ -28,7 +28,10 @@ export const getDiary = async (req, res) => {
     const result = await findDiaryByWriterId(req.user.pk);
     return res
       .status(200)
-      .send({ message: `${req.user.nickname}님의 일기 조회 결과입니다.`, data: result });
+      .send({
+        message: `${req.user.nickname}님의 일기 조회 결과입니다.`,
+        data: result,
+      });
   } catch (error) {
     return res.status(500).send({ message: "일기 조회에 실패하였습니다." });
   }
@@ -57,7 +60,7 @@ export const editDiary = async (req, res) => {
   const data = req.body;
 
   try {
-    const result = await patchDiary(diaryId, data);
+    const result = await patchDiary(diaryId, data, req.user.pk);
     if (result == null) {
       res.status(404).send({ message: "일기를 찾을 수 없습니다." });
     } else {
@@ -65,7 +68,7 @@ export const editDiary = async (req, res) => {
         .status(201)
         .send({ message: "일기 수정에 성공했습니다.", data: result });
     }
-  } catch {
-    res.status(500).send({ message: "일기 수정에 실패했습니다." });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 };
