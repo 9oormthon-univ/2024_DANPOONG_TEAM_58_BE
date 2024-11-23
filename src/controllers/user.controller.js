@@ -18,6 +18,20 @@ export const kakaoCallback = async (req, res) => {
     const tokenData = await userServices.getKakaoToken(code);
     const { user, created } = await userServices.addUser(tokenData);
 
+    if (created) {
+      // 유저가 새로 등록되었을 때, 기본 스킨을 'default'로 설정
+      const defaultSkin = await Skin.findOne({ where: { name: ' ' } });
+
+      if (defaultSkin) {
+        // 기본 스킨을 UserSkin에 연결
+        await UserSkin.create({
+          pk: user.id,   // 유저의 ID
+          pk2: defaultSkin.id,  // 'default' 스킨의 ID
+        });
+        console.log(`기본 스킨 'default'가 유저 ${user.id}에 연결되었습니다.`);
+      }
+    }
+
     return res.status(201).send({
       message: created ? '새로운 유저가 등록되었습니다.' : '로그인 성공.',
       token: tokenData,
