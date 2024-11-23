@@ -14,7 +14,7 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${naran_development}
+      - DB_NAME=${MYSQL_DATABASE}
     depends_on:
       - mysql
 
