@@ -34,8 +34,8 @@ export const getKakaoToken = async (code) => {
   }
 };
 
-export const addUser = async (tokenData) => {
-  try {
+export const addUser = async (tokenData)=>{
+  try{
     // 액세스 토큰 추가
     const header = {
       Authorization: `Bearer ${tokenData.access_token}`,
@@ -51,11 +51,13 @@ export const addUser = async (tokenData) => {
       nickname: result.kakao_account.profile.nickname, // 닉네임
       // profileImage: result.kakao_account.profile.profile_image_url,  // 프로필 사진 URL
     };
+    console.log(userInfo);
 
     // 데이터베이스에 유저가 존재하는지 확인 후 없으면 추가
     const [user, created] = await User.findOrCreate({
       where: { kakao_id: userInfo.id },
       defaults: {
+        kakao_id: userInfo.id,
         email: result.kakao_account.email,
         nickname: userInfo.nickname,
         // profile_image: userInfo.profileImage,
@@ -63,10 +65,13 @@ export const addUser = async (tokenData) => {
       },
     });
 
+    console.log(user);
+    console.log(created);
+
     // 새로 생성된 유저나 기존 유저 정보 반환
     return {
       user: {
-        id: user.id,
+        id: user.pk,
         nickname: user.nickname,
         profile_image: user.image,
       },
@@ -75,7 +80,7 @@ export const addUser = async (tokenData) => {
   } catch (error) {
     throw new Error("유저 정보 불러오기 실패");
   }
-};
+}
 
 export const getUserInfoFromToken = async (accessToken) => {
   try {

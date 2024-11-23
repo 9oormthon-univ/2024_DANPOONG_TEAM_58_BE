@@ -9,11 +9,11 @@ export const UserModel = (sequelize, DataTypes) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      id: {
+      kakao_id: {
         type: DataTypes.STRING(20),
         allowNull: false,
         unique: true,
-        comment: "UNIQUE",
+        comment: "카카오 아이디 (Unique)",
       },
       nickname: {
         type: DataTypes.STRING(20),
