@@ -22,11 +22,11 @@ const sequelize = new Sequelize(
   }
 );
 
-const User = UserModel(sequelize, DataTypes);
-const Skin = SkinModel(sequelize, DataTypes);
-const Diary = DiaryModel(sequelize, DataTypes);
-const UserSkin = UserSkinModel(sequelize, DataTypes, User, Skin);
-const SkinImage = SkinImageModel(sequelize, DataTypes);
+const User = UserModel(sequelize);
+const Skin = SkinModel(sequelize);
+const Diary = DiaryModel(sequelize);
+const UserSkin = UserSkinModel(sequelize, User, Skin);
+const SkinImage = SkinImageModel(sequelize);
 const Question = QuestionModel(sequelize);
 
 // 관계 설정
