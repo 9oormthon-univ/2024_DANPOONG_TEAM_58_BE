@@ -7,16 +7,22 @@ services:
     volumes:
       - .:/app
     ports:
-      - "3000:3000"
+      - "8000:8000"
     command: sh -c "npm install && npm run dev"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${naran_development}
     depends_on:
       - mysql
 
   mysql:
     image: mysql:9.1.0
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 1234qwer
-      MYSQL_DATABASE: naran_development
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
       - "3306:3306"
     volumes:
