@@ -1,7 +1,9 @@
-import axios from "axios";
-import qs from "querystring";
-import dotenv from "dotenv";
-import { User } from "../models/index.js";
+import axios from 'axios';
+import qs from 'querystring';
+import dotenv from 'dotenv';
+import User from '../models/user.model.js';
+import Skin from '../models/skin.model.js';
+import UserSkin from '../models/userskin.model.js';
 
 dotenv.config();
 
@@ -34,8 +36,8 @@ export const getKakaoToken = async (code) => {
   }
 };
 
-export const getUserInfo = async (tokenData) => {
-  try {
+export const addUser = async (tokenData)=>{
+  try{
     // 액세스 토큰 추가
     const header = {
       Authorization: `Bearer ${tokenData.access_token}`,
@@ -59,6 +61,7 @@ export const getUserInfo = async (tokenData) => {
         email: result.kakao_account.email,
         nickname: userInfo.nickname,
         // profile_image: userInfo.profileImage,
+        reward: 0,
       },
     });
 
@@ -74,4 +77,87 @@ export const getUserInfo = async (tokenData) => {
   } catch (error) {
     throw new Error("유저 정보 불러오기 실패");
   }
+}
+
+export const getUserInfoFromToken = async (accessToken) => {
+  try {
+    const response = await axios.get('https://kapi.kakao.com/v2/user/me', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = response.data;
+
+    return {
+      id: data.id,
+      email: data.kakao_account.email,
+      nickname: data.kakao_account.profile.nickname,
+      profile_image: data.kakao_account.profile.profile_image_url,
+    };
+  } catch (error) {
+    console.error('카카오 유저 정보 조회 실패:', error);
+    throw new Error('카카오 유저 정보 조회 실패');
+  }
 };
+
+export const getUserInfo = async (userId)=>{
+  try{
+    // 유저 조회
+    const user = await User.findOne({
+      where: { kakao_id: userId },
+    });
+
+    // 유저가 존재하지 않을 경우 에러 처리
+    if (!user) {
+      throw new Error('유저를 찾을 수 없습니다.');
+    }
+
+    return user;
+  } catch (error) {
+    throw new Error("유저 정보 조회 실패");
+  }
+}
+
+export const setUserSkin = async (userId, newSkinId)=>{
+  try{
+    // 유저 조회
+    const user = await User.findOne({
+      where: { kakao_id: userId },
+    });
+
+    // 유저가 존재하지 않을 경우 에러 처리
+    if (!user) {
+      throw new Error('유저를 찾을 수 없습니다.');
+    }
+
+    // 스킨 조회
+    const skin = await Skin.findOne({
+      where: { pk: newSkinId },
+    });
+
+    if (!skin) {
+      throw new Error("스킨을 찾을 수 없습니다.");
+    }
+
+    // 해당 유저의 스킨 변경
+    await UserSkin.destroy({
+      where: { pk: user.pk },
+    });
+
+    // 새로운 스킨과 관계 설정
+    const updatedSkin = await UserSkin.create({
+      pk: user.pk,
+      pk2: newSkin.pk,
+    });
+
+    return {
+      message: "스킨 변경 성공",
+      userId: userId,
+      skinId: newSkinId,
+      updatedSkin,
+    };
+  } catch (error) {
+    throw new Error("스킨 변경 실패");
+  }
+}

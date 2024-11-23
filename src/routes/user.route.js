@@ -12,4 +12,10 @@ router.get('/login', userControllers.kakaoLogin);
 // 카카오 인증 후 리디렉션된 콜백을 처리하는 라우트 (인증 후 서버에서 토큰을 받음)
 router.get('/kakao/callback', userControllers.kakaoCallback);
 
+// 유저별 정보 조회
+router.get('/get/:userId', userControllers.getUser);
+
+// 유저별 스킨 설정
+router.patch('/skin/:skinId', userControllers.setSkin);
+
 export default router;
