@@ -1,16 +1,38 @@
-import { Model } from "sequelize";
+import { Sequelize } from "sequelize";
 
 export const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      id: { type: DataTypes.STRING(20), allowNull: false, unique: true, primaryKey: true },
-      password: { type: DataTypes.STRING(20), allowNull: false, unique: true },
-      nickname: { type: DataTypes.STRING(20), allowNull: false, unique: true },
-      image: { type: DataTypes.TEXT, allowNull: true, unique: false },
+      pk: {
+        type: DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true,
+      },
+      id: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        unique: true,
+        comment: "UNIQUE",
+      },
+      password: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      nickname: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
-    { charset: "utf8", collate: "utf8_general_ci" }
+    {
+      tableName: "User",
+      timestamps: false,
+    }
   );
-  User.associate = (db) => {};
+
   return User;
 };
