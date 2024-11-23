@@ -1,5 +1,5 @@
 import express from "express";
-import * as userControllers from "../controllers/user.controllers.js";
+import * as userControllers from "../controllers/user.controller.js";
 
 import dotenv from 'dotenv';
 dotenv.config();  // .env 파일을 로드
